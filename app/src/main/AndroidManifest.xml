@@ -30,6 +30,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.giorgosmih.flightitineraries.MainActivity" />
         </activity>
+        <activity
+            android:name=".DetailActivity"
+            android:parentActivityName=".DetailActivity"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.giorgosmih.flightitineraries.DetailActivity" />
+        </activity>
     </application>
 
 </manifest>
