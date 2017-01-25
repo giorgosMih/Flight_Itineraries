@@ -1,0 +1,40 @@
+<resources>
+    <string name="app_name">Αναζήτηση Πτήσεων</string>
+    <string name="title_activity_search_result">Αποτελέσματα Αναζήτησης</string>
+    <string name="title_detail_activity">Λεπτομέριες</string>
+
+    <!-- fragment_main.xml -->
+    <string name="fr_main_searchTitle">Επιλογές Αναζήτησης</string>
+    <string name="fr_main_spinnerFrom">Πτήση Απο</string>
+    <string name="fr_main_spinnerTo">Πτήση Προς</string>
+    <string name="fr_main_buttonSearch">Αναζήτηση</string>
+    <string name="fr_main_departure_spinner">Ημερομηνία Αναχώρισης</string>
+    <string name="fr_main_arrive_spinner">Ημερομηνία Επιστροφής</string>
+    <string name="fr_main_nonstop">Απευθείας</string>
+    <string name="fr_main_max_cost">Μέγιστο Κόστος</string>
+    <string name="fr_main_buttonMoreOpts">More Options</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- fragment_detail_activity.xml -->
+    <string name="fr_detail_cost">Κόστος: </string>
+    <string name="fr_detail_outbound">Πτήσεις</string>
+    <string name="fr_detail_inbound">Επιστροφές</string>
+
+    <!-- detail_item.xml -->
+    <string name="detail_item_departsAt">Αναχώριση</string>
+    <string name="detail_item_arrivesAt">Άφιξη</string>
+    <string name="detail_item_origin">Προέλευση</string>
+    <string name="detail_item_destination">Προορισμός</string>
+    <string name="detail_item_airline">Αεροπορική Γραμμή</string>
+    <string name="detail_item_class">Κλάση</string>
+    <string name="detail_item_seats">Διαθέσιμες Θέσεις</string>
+
+    <!-- ProgressDialog string -->
+    <string name="dialog_wait_msg">Παρακαλώ περιμένετε...</string>
+    <string name="dialog_title">Κατέβασμα Δεδομένων</string>
+    <string name="dialog_countries_fetch">Εύρεση Χωρών</string>
+    <string name="dialog_flights_fetch">Εύρεση Πτήσεων</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

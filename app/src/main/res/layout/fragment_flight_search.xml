@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:weightSum="25"
+    android:orientation="vertical"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    tools:context="com.giorgosmih.flightitineraries.FlightSearchFragment">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3"
+        android:text="@string/fr_main_searchTitle"
+        android:textAlignment="center"
+        android:textSize="@dimen/fr_main_searchTitleDim"
+        android:textColor="@color/fr_main_searchTitleColor" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:layout_weight="20"
+        android:weightSum="5">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:orientation="vertical"
+            android:weightSum="2"
+            android:background="@drawable/customborder">
+
+            <Spinner
+                android:id="@+id/spinnerFlightFrom"
+                android:spinnerMode="dialog"
+                android:prompt="@string/fr_main_spinnerFrom"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <Spinner
+                android:id="@+id/spinnerFlightTo"
+                android:spinnerMode="dialog"
+                android:prompt="@string/fr_main_spinnerTo"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="5dp"
+            android:layout_weight="2"
+            android:weightSum="2"
+            android:background="@drawable/customborder">
+
+            <Spinner
+                android:id="@+id/spinnerCitiesFrom"
+                android:spinnerMode="dialog"
+                android:prompt="@string/fr_main_spinnerFrom"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <Spinner
+                android:id="@+id/spinnerCitiesTo"
+                android:spinnerMode="dialog"
+                android:prompt="@string/fr_main_spinnerTo"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_gravity="center">
+
+            <EditText
+                android:imeOptions="actionDone"
+                android:id="@+id/editTextPersons"
+                android:textAlignment="center"
+                android:hint="Ενήλικες"
+                android:inputType="number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <EditText
+                android:imeOptions="actionDone"
+                android:id="@+id/editTextChildren"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:textAlignment="center"
+                android:hint="Παιδιά"
+                android:inputType="number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <EditText
+                android:imeOptions="actionDone"
+                android:id="@+id/editTextInfants"
+                android:textAlignment="center"
+                android:hint="Νεογέννητα"
+                android:inputType="number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <!--<TextView
+                android:text="Ενήλικες  "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/buttonPersonsMinus"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:text="-"
+                android:onClick="ButtonPersonsMinus"/>
+
+            <EditText
+                android:id="@+id/editTextPersons"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:text="1"
+                android:textAlignment="center" />
+
+            <Button
+                android:id="@+id/buttonPersonsAdd"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:text="+"
+                android:onClick="ButtonPersonsAdd"/>-->
+
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/editTextDepartDate"
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/fr_main_departure_spinner"
+            android:textAlignment="center"
+            android:inputType="date"/>
+
+        <EditText
+            android:id="@+id/editTextArriveDate"
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/fr_main_arrive_spinner"
+            android:textAlignment="center"/>
+
+        <CheckBox
+            android:id="@+id/checkboxNonStop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/fr_main_nonstop"
+            android:layout_gravity="center"/>
+
+        <EditText
+            android:id="@+id/editTextMaxCost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
+            android:hint="@string/fr_main_max_cost"
+            android:layout_gravity="center"/>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2">
+
+        <Button
+            android:id="@+id/buttonSearch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/fr_main_buttonSearch"
+            android:textSize="@dimen/fr_main_buttonSearchDim"
+            android:textAllCaps="false"
+            android:gravity="start"/>
+
+        <Button
+            android:id="@+id/buttonMoreOpts"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/fr_main_buttonMoreOpts"
+            android:textSize="@dimen/fr_main_buttonSearchDim"
+            android:textAllCaps="false"
+            android:layout_alignParentEnd="true"/>
+    </RelativeLayout>
+</LinearLayout>
