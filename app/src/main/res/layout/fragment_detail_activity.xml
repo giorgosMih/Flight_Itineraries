@@ -74,4 +74,12 @@
         </ListView>
     </LinearLayout>
 
+    <Button
+        android:textAllCaps="false"
+        android:id="@+id/buttonBuy"
+        android:text="Κράτηση"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"/>
+
 </LinearLayout>

@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
@@ -148,14 +149,17 @@ public class FlightSearchFragment extends Fragment {
         arrayAdapterCitiesTo = new ArrayAdapter<String>(getActivity(), R.layout.spinner_item_cities, R.id.spinner_item_flight_textview);
         arrayAdapterCountries = new ArrayAdapter<String>(getActivity(), R.layout.spinner_item_cities, R.id.spinner_item_flight_textview);
 
-        Spinner from = ((Spinner)rootView.findViewById(R.id.spinnerFlightFrom));
+        //final Spinner from = ((Spinner)rootView.findViewById(R.id.spinnerFlightFrom));
+        final Spinner from = ((Spinner)rootView.findViewById(R.id.spinnerFlightFrom));
         from.setAdapter(arrayAdapterCountries);
         from.setPrompt(getContext().getString(R.string.fr_main_spinnerFrom));
         from.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(position == 0 || !wifi.isWifiEnabled())
+                if(position == 0 || !wifi.isWifiEnabled()) {
+                    arrayAdapterCitiesFrom.clear();
                     return;
+                }
                 String country = parent.getItemAtPosition(position).toString();
                 new FetchCitiesAndAirportsData().execute("1",country);
             }
@@ -168,8 +172,10 @@ public class FlightSearchFragment extends Fragment {
         to.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(position == 0 || !wifi.isWifiEnabled())
+                if(position == 0 || !wifi.isWifiEnabled()) {
+                    arrayAdapterCitiesTo.clear();
                     return;
+                }
                 String country = parent.getItemAtPosition(position).toString();
                 new FetchCitiesAndAirportsData().execute("2",country);
             }
@@ -218,7 +224,7 @@ public class FlightSearchFragment extends Fragment {
 
                 if(from.isEmpty() || to.isEmpty() || depDate.isEmpty()){
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                    builder.setMessage("Τα πεδία: Προέλευσης, Προορισμού και Ημερομηνίας Αναχώρισης\nείναι υποχρεωτικά. Παρακαλώ Συμπληρώστε τα.");
+                    builder.setMessage("Τα πεδία: \nΠροέλευσης\nΠροορισμού\nΗμερομηνίας Αναχώρισης\nείναι υποχρεωτικά. Παρακαλώ Συμπληρώστε τα.");
                     builder.setTitle("Ελλιπή Κριτήρια Αναζήτησης");
 
                     builder.create().show();
@@ -294,10 +300,6 @@ public class FlightSearchFragment extends Fragment {
             String jsonStr = null;
 
             try {
-                // Construct the URL for the OpenWeatherMap query
-                // Possible parameters are avaiable at OWM's forecast API page, at
-                // http://openweathermap.org/API#forecast
-                //MODIFIED FOR CITY OF THESSALONIKI, GREECE
                 final String baseUrl = "https://api.sandbox.amadeus.com/v1.2/flights/low-fare-search?";
                 final String apiKeyParam = "apikey";
                 final String originParam= "origin";//required
@@ -340,7 +342,7 @@ public class FlightSearchFragment extends Fragment {
 
                 URL url = new URL(builtUri.toString());
 
-                Log.v("URL", "Built URI: "+builtUri.toString());
+                //Log.v("URL", "Built URI: "+builtUri.toString());
 
                 // Create the request to OpenWeatherMap, and open the connection
                 urlConnection = (HttpURLConnection) url.openConnection();
@@ -368,7 +370,7 @@ public class FlightSearchFragment extends Fragment {
                 StringBuffer buffer = new StringBuffer();
                 if (inputStream == null) {
                     // Nothing to do.
-                    Log.v("URL", "empty inputStream");
+                    //Log.v("URL", "empty inputStream");
                     return null;
                 }
                 reader = new BufferedReader(new InputStreamReader(inputStream));
@@ -387,7 +389,7 @@ public class FlightSearchFragment extends Fragment {
                     return null;
                 }
                 jsonStr = buffer.toString();
-                Log.v("URL","JSON String: "+jsonStr);
+                //Log.v("URL","JSON String: "+jsonStr);
             } catch (IOException e) {
                 e.printStackTrace();
             } finally{
@@ -512,9 +514,7 @@ public class FlightSearchFragment extends Fragment {
                 arrayAdapterCountries.clear();
 
                 arrayAdapterCountries.add(SELECT_PROMPT);
-                for(String country : result) {
-                    arrayAdapterCountries.add(country);
-                }
+                arrayAdapterCountries.addAll(result);
 
                 arrayAdapterCountries.sort(new Comparator<String>() {
                     @Override

@@ -19,30 +19,48 @@ public class Flight implements Serializable{
     public static final String DEPARTS_AT_PARAM = "departs_at";
     public static final String ARRIVES_AT_PARAM = "arrives_at";
 
+    public static final String ORIGIN_PARAM = "origin";
+    public static final String DESTINATION_PARAM = "destination";
+    public static final String AIRPORT_PARAM = "airport";
+
+    public static final String AIRLINE_PARAM = "operating_airline";
+    public static final String FLIGHT_NO_PARAM = "flight_number";
+
+    public static final String BOOKING_INFO_PARAM = "booking_info";
+    public static final String CLASS_PARAM = "travel_class";
+    public static final String SEATS_PARAM = "seats_remaining";
+
     private ArrayList<FlightData> outboundFlights = new ArrayList<FlightData>();
     private ArrayList<FlightData>  inboundFlights = new ArrayList<FlightData>();
     private String price;
+    private boolean refundable;
+    private boolean changePenalties;
 
-    public Flight(JSONObject outbound, String pr) throws JSONException {
+    public Flight(JSONObject outbound, String pr, boolean ref, boolean penalties) throws JSONException {
         this.price = pr;
+        this.changePenalties = penalties;
+        this.refundable = ref;
         JSONArray array = outbound.getJSONArray(FLIGHTS_PARAM);
         for(int i=0;i<array.length();i++){
             JSONObject obj = array.getJSONObject(i);
             outboundFlights.add(new FlightData(
                             obj.getString(DEPARTS_AT_PARAM),
                             obj.getString(ARRIVES_AT_PARAM),
-                            obj.getJSONObject("origin").getString("airport"),
-                            obj.getJSONObject("destination").getString("airport"),
-                            obj.getString("operating_airline"),
-                            obj.getJSONObject("booking_info").getString("travel_class"),
-                            obj.getJSONObject("booking_info").getString("seats_remaining")
+                            obj.getJSONObject(ORIGIN_PARAM).getString(AIRPORT_PARAM),
+                            obj.getJSONObject(DESTINATION_PARAM).getString(AIRPORT_PARAM),
+                            obj.getString(AIRLINE_PARAM),
+                            obj.getString(FLIGHT_NO_PARAM),
+                            obj.getJSONObject(BOOKING_INFO_PARAM).getString(CLASS_PARAM),
+                            obj.getJSONObject(BOOKING_INFO_PARAM).getString(SEATS_PARAM)
                     )
             );
         }
     }
 
-    public Flight(JSONObject outbound, JSONObject inbound, String pr) throws JSONException {
+    public Flight(JSONObject outbound, JSONObject inbound, String pr,boolean ref, boolean penalties) throws JSONException {
         this.price = pr;
+        this.changePenalties = penalties;
+        this.refundable = ref;
 
         JSONArray array = outbound.getJSONArray(FLIGHTS_PARAM);
         for(int i=0;i<array.length();i++){
@@ -50,11 +68,12 @@ public class Flight implements Serializable{
             outboundFlights.add(new FlightData(
                             obj.getString(DEPARTS_AT_PARAM),
                             obj.getString(ARRIVES_AT_PARAM),
-                            obj.getJSONObject("origin").getString("airport"),
-                            obj.getJSONObject("destination").getString("airport"),
-                            obj.getString("operating_airline"),
-                            obj.getJSONObject("booking_info").getString("travel_class"),
-                            obj.getJSONObject("booking_info").getString("seats_remaining")
+                            obj.getJSONObject(ORIGIN_PARAM).getString(AIRPORT_PARAM),
+                            obj.getJSONObject(DESTINATION_PARAM).getString(AIRPORT_PARAM),
+                            obj.getString(AIRLINE_PARAM),
+                            obj.getString(FLIGHT_NO_PARAM),
+                            obj.getJSONObject(BOOKING_INFO_PARAM).getString(CLASS_PARAM),
+                            obj.getJSONObject(BOOKING_INFO_PARAM).getString(SEATS_PARAM)
                     )
             );
         }
@@ -65,11 +84,12 @@ public class Flight implements Serializable{
             inboundFlights.add(new FlightData(
                             obj.getString(DEPARTS_AT_PARAM),
                             obj.getString(ARRIVES_AT_PARAM),
-                            obj.getJSONObject("origin").getString("airport"),
-                            obj.getJSONObject("destination").getString("airport"),
-                            obj.getString("operating_airline"),
-                            obj.getJSONObject("booking_info").getString("travel_class"),
-                            obj.getJSONObject("booking_info").getString("seats_remaining")
+                            obj.getJSONObject(ORIGIN_PARAM).getString(AIRPORT_PARAM),
+                            obj.getJSONObject(DESTINATION_PARAM).getString(AIRPORT_PARAM),
+                            obj.getString(AIRLINE_PARAM),
+                            obj.getString(FLIGHT_NO_PARAM),
+                            obj.getJSONObject(BOOKING_INFO_PARAM).getString(CLASS_PARAM),
+                            obj.getJSONObject(BOOKING_INFO_PARAM).getString(SEATS_PARAM)
                     )
             );
         }
@@ -77,6 +97,14 @@ public class Flight implements Serializable{
 
     public boolean hasInbounds(){
         return inboundFlights.size() > 0;
+    }
+
+    public String getOriginCode(){
+        return outboundFlights.get(0).origin;
+    }
+
+    public String getDestinationCode(){
+        return outboundFlights.get(outboundFlights.size()-1).destination;
     }
 
     public String getDerartArrive(){
@@ -114,6 +142,12 @@ public class Flight implements Serializable{
 
     public String getPrice(){return "Τιμή: " + price +EURO;}
     public String getPriceNum(){return price + EURO;}
+    public String getRefundableString(){
+        return (refundable) ? "Με επιστροφή χρημάτων":"Χωρίς επιστροφή χρημάτων";
+    }
+    public String getPenaltiesString(){
+        return (changePenalties)?"Με χρέωση αλλαγής":"Χωρίς χρέωση αλλαγής";
+    }
 
     public String getDirect(){
         if(outboundFlights.size() <= 1 )
@@ -149,16 +183,18 @@ public class Flight implements Serializable{
         private String origin;
         private String destination;
         private String operation_airline;
+        private String flightNO;
         private String travel_class;
         private String seats;
 
 
-        public FlightData(String depart,String arrive,String or,String dest,String oper,String tr_class,String seat){
+        public FlightData(String depart,String arrive,String or,String dest,String oper,String flightNum,String tr_class,String seat){
             departAt = depart;
             arriveAt = arrive;
             origin = or;
             destination = dest;
             operation_airline = oper;
+            flightNO = flightNum;
             travel_class = tr_class;
             seats = seat;
         }
@@ -168,15 +204,8 @@ public class Flight implements Serializable{
         public String getOrigin(){return origin;}
         public String getDestination(){return destination;}
         public String getOperation_airline(){return operation_airline;}
+        public String getFlightNumber(){return flightNO;}
         public String getTravel_class(){return travel_class;}
         public String getSeats(){return seats;}
-
-        public String toString(){
-            return    "Departs: " + departAt + "\n"
-                    + "Arrives: " + arriveAt + "\n"
-                    + origin + "->" + destination + "\n"
-                    + "Airline: " + operation_airline + "\n"
-                    + "Class: " + travel_class + ", seats: " + seats;
-        }
     }
 }

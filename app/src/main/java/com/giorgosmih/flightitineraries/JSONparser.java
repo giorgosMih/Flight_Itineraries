@@ -63,51 +63,22 @@ public class JSONparser {
         ArrayList<Flight> list = new ArrayList<Flight>();
         for(int i=0;i<result.length();i++){
             JSONArray itinerary = result.getJSONObject(i).getJSONArray("itineraries");
+
             JSONObject fare = result.getJSONObject(i).getJSONObject("fare");
             String price = fare.getString("total_price");
+            boolean refundable = fare.getJSONObject("restrictions").getBoolean("refundable");
+            boolean penalties = fare.getJSONObject("restrictions").getBoolean("change_penalties");
+
             for(int j=0;j<itinerary.length();j++){
                 JSONObject flight = itinerary.getJSONObject(j);
                 if(flight.has("inbound"))
-                    list.add(new Flight(flight.getJSONObject("outbound"),flight.getJSONObject("inbound"),price));
+                    list.add(new Flight(flight.getJSONObject("outbound"),flight.getJSONObject("inbound"),price,refundable,penalties));
                 else
-                    list.add(new Flight(flight.getJSONObject("outbound"),price));
+                    list.add(new Flight(flight.getJSONObject("outbound"),price,refundable,penalties));
             }
         }
 
         Flight[] array = list.toArray(new Flight[0]);
         return array;
-
-        /*if(jsonStr == null){
-            return new String[]{"No matching"};
-        }
-
-        JSONObject root = new JSONObject(jsonStr);
-        JSONArray result = root.getJSONArray("results");
-
-        String[] resultStrs = new String[result.length()];
-
-        for(int i=0;i<result.length();i++){
-            String temp = "";
-
-            JSONArray itinerary = result.getJSONObject(i).getJSONArray("itineraries");
-            JSONObject fare = result.getJSONObject(i).getJSONObject("fare");
-
-            for(int j=0;j<itinerary.length();j++){
-                JSONArray flight = itinerary.getJSONObject(j).getJSONObject("outbound").getJSONArray("flights");
-
-                for(int k=0;k<flight.length();k++){
-                    JSONObject obj = flight.getJSONObject(k);
-                    temp += "Departs at: " + obj.getString("departs_at") + ", Arrives at: " + obj.getString("arrives_at");
-                }
-
-                temp += '\n';
-            }
-
-            temp += ", price: " + fare.getString("total_price");
-
-            resultStrs[i] = temp;
-        }
-
-        return resultStrs;*/
     }
 }
