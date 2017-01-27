@@ -54,6 +54,22 @@ public class JSONparser {
 
     }
 
+    public static void getAirlinesDataFromJson(String JsonStr, DBHandler db)
+            throws JSONException {
+
+        // These are the names of the JSON objects that need to be extracted.
+        final String OWM_NAME = "name";
+        final String OWN_CODE = "code";
+
+        JSONArray array = new JSONObject(JsonStr).getJSONArray("response");
+
+        int size = array.length();
+        for(int i = 0; i < size; i++) {
+            JSONObject obj = array.getJSONObject(i);
+            db.addAirline(new String[]{obj.getString(OWN_CODE),obj.getString(OWM_NAME)});
+        }
+    }
+
     public static Flight[] getFlightsDataFromJson(String jsonStr)
             throws JSONException{
 

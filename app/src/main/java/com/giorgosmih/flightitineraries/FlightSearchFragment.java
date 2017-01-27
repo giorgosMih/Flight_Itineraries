@@ -50,6 +50,7 @@ public class FlightSearchFragment extends Fragment {
     ArrayAdapter<String> arrayAdapterCitiesTo;
 
     MyProgressDialog dialog;
+    public static DBHandler dbHandler;
 
     final Calendar myCalendar;
     final DatePickerDialog.OnDateSetListener dateDepart;
@@ -90,6 +91,8 @@ public class FlightSearchFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
+        dbHandler = new DBHandler(this.getActivity());
     }
 
     @Override
@@ -276,6 +279,7 @@ public class FlightSearchFragment extends Fragment {
                 getString(R.string.dialog_title));
 
         new FetchCountryData().execute();
+        new FetchAirlinesData().execute();
     }
 
     private void updateLabel(int id) {
@@ -625,4 +629,74 @@ public class FlightSearchFragment extends Fragment {
         }
     }
 
+    public class FetchAirlinesData extends AsyncTask<Void,Void,Void> {
+
+        protected Void doInBackground(Void... params) {
+
+            HttpURLConnection urlConnection = null;
+            BufferedReader reader = null;
+
+            // Will contain the raw JSON response as a string.
+            String jsonStr = null;
+
+            try {
+                final String baseUrl = "https://iatacodes.org/api/v6/airlines?";
+                final String apiKeyParam = "api_key";
+
+                Uri builtUri = Uri.parse(baseUrl).buildUpon()
+                        .appendQueryParameter(apiKeyParam, BuildConfig.IATA_API_KEY)
+                        .build();
+
+                URL url = new URL(builtUri.toString());
+
+                // Create the request to OpenWeatherMap, and open the connection
+                urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setRequestMethod("GET");
+                urlConnection.connect();
+
+                // Read the input stream into a String
+                InputStream inputStream = urlConnection.getInputStream();
+                StringBuffer buffer = new StringBuffer();
+                if (inputStream == null) {
+                    // Nothing to do.
+                    return null;
+                }
+                reader = new BufferedReader(new InputStreamReader(inputStream));
+
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    // Since it's JSON, adding a newline isn't necessary (it won't affect parsing)
+                    // But it does make debugging a *lot* easier if you print out the completed
+                    // buffer for debugging.
+                    buffer.append(line + "\n");
+                }
+
+                if (buffer.length() == 0) {
+                    // Stream was empty.  No point in parsing.
+                    return null;
+                }
+                jsonStr = buffer.toString();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (urlConnection != null) {
+                    urlConnection.disconnect();
+                }
+                if (reader != null) {
+                    try {
+                        reader.close();
+                    } catch (final IOException e) {
+                        Log.e("URL", "Error closing stream", e);
+                    }
+                }
+            }
+            try {
+                JSONparser.getAirlinesDataFromJson(jsonStr,dbHandler);
+            } catch (JSONException e) {
+                Log.e("URL", e.getMessage(), e);
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
 }

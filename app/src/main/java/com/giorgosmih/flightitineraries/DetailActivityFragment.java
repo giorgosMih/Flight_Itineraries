@@ -116,7 +116,9 @@ public class DetailActivityFragment extends Fragment {
             holder.arrivesAt.setText(data.getArriveAt());
             holder.origin.setText(data.getOrigin());
             holder.destination.setText(data.getDestination());
-            holder.ailine.setText(data.getOperation_airline());
+            holder.ailine.setText(
+                    FlightSearchFragment.dbHandler.getAirlineByCode(data.getOperation_airline())
+            );
             holder.travel_class.setText(data.getTravel_class());
             holder.seats.setText(data.getSeats());
 
