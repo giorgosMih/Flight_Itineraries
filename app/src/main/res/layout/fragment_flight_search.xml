@@ -1,168 +1,193 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fragment_flight_search"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:weightSum="25"
-    android:orientation="vertical"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
     android:focusable="true"
     android:focusableInTouchMode="true"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.giorgosmih.flightitineraries.FlightSearchFragment">
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="3"
-        android:text="@string/fr_main_searchTitle"
-        android:textAlignment="center"
-        android:textSize="@dimen/fr_main_searchTitleDim"
-        android:textColor="@color/fr_main_searchTitleColor" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        android:layout_weight="20"
-        android:weightSum="5">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <LinearLayout
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="2"
-            android:orientation="vertical"
-            android:weightSum="2"
-            android:background="@drawable/customborder">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="@string/fr_main_searchTitle"
+            android:textAlignment="center"
+            android:textColor="@color/fr_main_searchTitleColor"
+            android:textSize="@dimen/fr_main_searchTitleDim" />
 
-            <Spinner
-                android:id="@+id/spinnerFlightFrom"
-                android:spinnerMode="dialog"
-                android:prompt="@string/fr_main_spinnerFrom"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
-
-            <Spinner
-                android:id="@+id/spinnerFlightTo"
-                android:spinnerMode="dialog"
-                android:prompt="@string/fr_main_spinnerTo"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"/>
-        </LinearLayout>
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="5dp"
-            android:layout_weight="2"
-            android:weightSum="2"
-            android:background="@drawable/customborder">
+            android:layout_height="wrap_content">
 
-            <Spinner
-                android:id="@+id/spinnerCitiesFrom"
-                android:spinnerMode="dialog"
-                android:prompt="@string/fr_main_spinnerFrom"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1" />
+                android:layout_weight="2"
+                android:background="@drawable/customborder"
+                android:orientation="vertical"
+                android:weightSum="2">
 
-            <Spinner
-                android:id="@+id/spinnerCitiesTo"
-                android:spinnerMode="dialog"
-                android:prompt="@string/fr_main_spinnerTo"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"/>
+                <AutoCompleteTextView
+                    android:dropDownHeight="150dp"
+                    android:imeOptions="actionDone"
+                    android:inputType="textAutoComplete"
+                    android:id="@+id/spinnerCitiesFrom"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:completionThreshold="1"
+                    android:hint="@string/fr_main_spinnerFrom" />
+
+                <AutoCompleteTextView
+                    android:dropDownHeight="150dp"
+                    android:imeOptions="actionDone"
+                    android:inputType="textAutoComplete"
+                    android:completionThreshold="1"
+                    android:id="@+id/spinnerCitiesTo"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:hint="@string/fr_main_spinnerTo" />
+            </LinearLayout>
         </LinearLayout>
+
         <LinearLayout
-            android:orientation="horizontal"
+            android:layout_marginTop="20dp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:text="Φιλτράρισμα ως προς την Χώρα"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2"
+                android:background="@drawable/customborder"
+                android:orientation="vertical"
+                android:weightSum="2">
+
+                <AutoCompleteTextView
+                    android:imeOptions="actionDone"
+                    android:inputType="textAutoComplete"
+                    android:dropDownHeight="150dp"
+                    android:completionThreshold="1"
+                    android:id="@+id/spinnerFlightFrom"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:hint="@string/fr_main_origin_country" />
+
+                <AutoCompleteTextView
+                    android:inputType="textAutoComplete"
+                    android:imeOptions="actionDone"
+                    android:dropDownHeight="150dp"
+                    android:completionThreshold="1"
+                    android:id="@+id/spinnerFlightTo"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:hint="@string/fr_main_destination_country" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            android:layout_marginTop="20dp"
+            android:text="Επιλογή Επιβατών"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="0dp"
+            android:layout_gravity="center"
             android:layout_weight="1"
-            android:layout_gravity="center">
+            android:orientation="horizontal">
 
             <EditText
-                android:imeOptions="actionDone"
                 android:id="@+id/editTextPersons"
-                android:textAlignment="center"
-                android:hint="Ενήλικες"
-                android:inputType="number"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <EditText
+                android:layout_height="wrap_content"
+                android:hint="Ενήλικες"
                 android:imeOptions="actionDone"
+                android:inputType="number"
+                android:textAlignment="center" />
+
+            <EditText
                 android:id="@+id/editTextChildren"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
-                android:textAlignment="center"
                 android:hint="Παιδιά"
-                android:inputType="number"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <EditText
                 android:imeOptions="actionDone"
-                android:id="@+id/editTextInfants"
-                android:textAlignment="center"
-                android:hint="Νεογέννητα"
                 android:inputType="number"
+                android:textAlignment="center" />
+
+            <EditText
+                android:id="@+id/editTextInfants"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:hint="Νεογέννητα"
+                android:imeOptions="actionDone"
+                android:inputType="number"
+                android:textAlignment="center" />
 
         </LinearLayout>
 
         <EditText
             android:id="@+id/editTextDepartDate"
-            android:layout_marginTop="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:hint="@string/fr_main_departure_spinner"
-            android:textAlignment="center"
-            android:inputType="date"/>
+            android:inputType="date"
+            android:textAlignment="center" />
 
         <EditText
             android:id="@+id/editTextArriveDate"
-            android:layout_marginTop="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:hint="@string/fr_main_arrive_spinner"
-            android:textAlignment="center"/>
+            android:textAlignment="center" />
 
         <CheckBox
             android:id="@+id/checkboxNonStop"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/fr_main_nonstop"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center"
+            android:text="@string/fr_main_nonstop" />
 
         <EditText
             android:id="@+id/editTextMaxCost"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:inputType="numberDecimal"
+            android:layout_gravity="center"
             android:hint="@string/fr_main_max_cost"
-            android:layout_gravity="center"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2"
-        android:gravity="center">
+            android:inputType="numberDecimal" />
 
         <Button
             android:id="@+id/buttonSearch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:text="@string/fr_main_buttonSearch"
-            android:textSize="@dimen/fr_main_buttonSearchDim"
             android:textAllCaps="false"
-            android:layout_gravity="center"/>
+            android:textSize="@dimen/fr_main_buttonSearchDim" />
     </LinearLayout>
-</LinearLayout>
+</ScrollView>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ListPreference
+        android:key="@string/pref_currency_key"
+        android:defaultValue="@string/pref_currency_default"
+        android:title="@string/pref_currency_label"
+        android:entries="@array/pref_currency_entries"
+        android:entryValues="@array/pref_currency_entryValues" />
+
+    <EditTextPreference
+        android:title="@string/pref_max_results_label"
+        android:key="@string/pref_max_results_key"
+        android:defaultValue="@string/pref_max_results_default"
+        android:inputType="number"
+        android:singleLine="true" />
+
+</PreferenceScreen>

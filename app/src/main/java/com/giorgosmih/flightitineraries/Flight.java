@@ -1,5 +1,9 @@
 package com.giorgosmih.flightitineraries;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -14,6 +18,10 @@ import java.util.Date;
 public class Flight implements Serializable{
 
     public static final String EURO = "\u20ac";
+    public static final String DOLLAR = "$";
+    public static final String POUND = "£";
+    public static final String YEN = "¥";
+    public static final String RUBLE = "\u20BD";
 
     public static final String FLIGHTS_PARAM = "flights";
     public static final String DEPARTS_AT_PARAM = "departs_at";
@@ -35,6 +43,9 @@ public class Flight implements Serializable{
     private String price;
     private boolean refundable;
     private boolean changePenalties;
+
+    private static Context context;
+    private static SharedPreferences prefs;
 
     public Flight(JSONObject outbound, String pr, boolean ref, boolean penalties) throws JSONException {
         this.price = pr;
@@ -95,6 +106,8 @@ public class Flight implements Serializable{
         }
     }
 
+    public static void setPreferences(SharedPreferences p,Context c){prefs = p;context = c;}
+
     public boolean hasInbounds(){
         return inboundFlights.size() > 0;
     }
@@ -140,8 +153,36 @@ public class Flight implements Serializable{
         return "Σφάλμα: Μετατροπής Date";
     }
 
-    public String getPrice(){return "Τιμή: " + price +EURO;}
-    public String getPriceNum(){return price + EURO;}
+    public String getPrice(){
+        switch (prefs.getString(context.getString(R.string.pref_currency_key),context.getString(R.string.pref_currency_default))){
+            case "USD":case "CAD":
+                return "Τιμή: " + price +DOLLAR;
+            case "EUR":
+                return "Τιμή: " + price +EURO;
+            case "GBP":
+                return "Τιμή: " + price +POUND;
+            case "JPY":
+                return "Τιμή: " + price +YEN;
+            case "RUB":
+                return "Τιμή: " + price +RUBLE;
+        }
+        return "";
+    }
+    public String getPriceNum(){
+        switch (prefs.getString(context.getString(R.string.pref_currency_key),context.getString(R.string.pref_currency_default))){
+            case "USD":case "CAD":
+                return price +DOLLAR;
+            case "EUR":
+                return price +EURO;
+            case "GBP":
+                return price +POUND;
+            case "JPY":
+                return price +YEN;
+            case "RUB":
+                return price +RUBLE;
+        }
+        return "";
+    }
     public String getRefundableString(){
         return (refundable) ? "Με επιστροφή χρημάτων":"Χωρίς επιστροφή χρημάτων";
     }

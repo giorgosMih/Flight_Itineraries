@@ -13,7 +13,10 @@
     <string name="fr_main_nonstop">Απευθείας</string>
     <string name="fr_main_max_cost">Μέγιστο Κόστος</string>
     <string name="fr_main_buttonMoreOpts">More Options</string>
-    <string name="action_settings">Settings</string>
+    <string name="fr_main_origin_country">Χώρα Προέλευσης</string>
+    <string name="fr_main_destination_country">Χώρα Προορισμού</string>
+    <string name="action_updateDB">Ενημέρωση Βάσης</string>
+    <string name="action_settings">Ρυθμίσεις</string>
 
     <!-- fragment_detail_activity.xml -->
     <string name="fr_detail_cost">Κόστος: </string>
@@ -32,9 +35,33 @@
     <!-- ProgressDialog string -->
     <string name="dialog_wait_msg">Παρακαλώ περιμένετε...</string>
     <string name="dialog_title">Κατέβασμα Δεδομένων</string>
-    <string name="dialog_countries_fetch">Εύρεση Χωρών</string>
+    <string name="dialog_data_fetch">Κατέβασμα Δεδομένων</string>
     <string name="dialog_flights_fetch">Εύρεση Πτήσεων</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- Preferences strings -->
+    <string name="pref_max_results_label">Μέγιστος Αριθμός Αποτελεσμάτων</string>
+    <string name="pref_max_results_key" translatable="false">number_of_results</string>
+    <string name="pref_max_results_default" translatable="false">-1</string>
+
+    <string name="pref_currency_label">Νόμισμα</string>
+    <string name="pref_currency_key" translatable="false">currency</string>
+    <string name="pref_currency_default" translatable="false">EUR</string>
+
+    <string-array name="pref_currency_entries">
+        <item>Δολάριο (Αμερικής)</item>
+        <item>Ευρώ</item>
+        <item>Δολάριο (Καναδά)</item>
+        <item>Βρετανική Λίρα (Στερλίνα)</item>
+        <item>Γεν Ιαπωνίας</item>
+        <item>Ρούβλι Ρωσίας</item>
+    </string-array>
+
+    <string-array name="pref_currency_entryValues">
+        <item>USD</item>
+        <item>EUR</item>
+        <item>CAD</item>
+        <item>GBP</item>
+        <item>JPY</item>
+        <item>RUB</item>
+    </string-array>
 </resources>

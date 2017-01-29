@@ -1,5 +1,7 @@
 package com.giorgosmih.flightitineraries;
 
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -8,7 +10,7 @@ import java.util.ArrayList;
 
 public class JSONparser {
 
-    public static String[] getCountryDataFromJson(String countryJsonStr)
+    public static void getCountryDataFromJson(String countryJsonStr, DBHandler db)
             throws JSONException {
 
         // These are the names of the JSON objects that need to be extracted.
@@ -18,36 +20,32 @@ public class JSONparser {
         JSONObject countryJson = new JSONObject(countryJsonStr);
         JSONArray countriesArray = countryJson.getJSONArray(OWM_LIST);
 
-        String[] resultStrs = new String[countriesArray.length()];
-        for(int i = 0; i < countriesArray.length(); i++) {
+        int size = countriesArray.length();
+        FlightSearchFragment.countries = size;
+        Log.v("DBug","Countries: " + size);
+        for(int i = 0; i < size; i++) {
             JSONObject country = countriesArray.getJSONObject(i);
 
-            resultStrs[i] = country.getString(OWM_COUNTRY_NAME);
+            db.addCountry(country.getString(OWM_COUNTRY_NAME));
         }
-
-        return resultStrs;
-
     }
 
     public static String[] getCitiesAndAirportsDataFromJson(String JsonStr)
             throws JSONException {
 
         // These are the names of the JSON objects that need to be extracted.
-        final String OWM_CITIES_LIST = "cities_by_countries";
         final String OWM_AIRPORTS_LIST = "airports_by_countries";
         final String OWM_NAME = "name";
         final String OWN_CODE = "code";
 
         JSONObject countryJson = new JSONObject(JsonStr).getJSONObject("response");
-        JSONArray citiesArray = countryJson.getJSONArray(OWM_CITIES_LIST);
         JSONArray airportsArray = countryJson.getJSONArray(OWM_AIRPORTS_LIST);
 
-        String[] resultStrs = new String[citiesArray.length()];
-        for(int i = 0; i < citiesArray.length(); i++) {
-            JSONObject city = citiesArray.getJSONObject(i);
+        int size = airportsArray.length();
+        String[] resultStrs = new String[size];
+        for(int i = 0; i < size; i++) {
             JSONObject airport = airportsArray.getJSONObject(i);
-
-            resultStrs[i] = city.getString(OWM_NAME) + " " + airport.getString(OWM_NAME) + ", " + airport.getString(OWN_CODE);
+            resultStrs[i] = airport.getString(OWM_NAME) + ", " + airport.getString(OWN_CODE);
         }
 
         return resultStrs;

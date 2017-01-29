@@ -39,13 +39,22 @@
                 android:value="com.giorgosmih.flightitineraries.SearchResultActivity" />
         </activity>
         <activity
-            android:label="Κράτηση"
             android:name=".ReservationActivity"
+            android:label="Κράτηση"
             android:parentActivityName=".DetailActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.giorgosmih.flightitineraries.DetailActivity" />
+        </activity>
+        <activity
+            android:name=".SettingsActivity"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/action_settings">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.giorgosmih.flightitineraries.MainActivity" />
         </activity>
     </application>
 
