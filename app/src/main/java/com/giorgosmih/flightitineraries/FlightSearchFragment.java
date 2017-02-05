@@ -30,6 +30,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import org.json.JSONException;
 
@@ -55,12 +56,15 @@ public class FlightSearchFragment extends Fragment {
 
     public static MyProgressDialog dialog;
     public static DBHandler dbHandler;
+    static final String NO_INTERNET = "Χωρις Ιντερνετ";
 
+    ConnectivityManager Cm;
     final Calendar myCalendar;
     final DatePickerDialog.OnDateSetListener dateDepart;
     final DatePickerDialog.OnDateSetListener dateArrive;
     EditText departDateEditText;
     EditText arriveDataEditText;
+    Thread connectivityThread;
 
     private int responseCode;
 
@@ -101,7 +105,6 @@ public class FlightSearchFragment extends Fragment {
         int id = item.getItemId();
 
         if(id == R.id.action_updateDB){
-            dbHandler.deleteAllData();
             updateDatabase();
             return true;
         }
@@ -119,6 +122,8 @@ public class FlightSearchFragment extends Fragment {
         setHasOptionsMenu(true);
 
         dbHandler = new DBHandler(this.getActivity());
+        Cm = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+
         Flight.setPreferences(PreferenceManager.getDefaultSharedPreferences(getActivity()),getActivity());
     }
 
@@ -126,14 +131,13 @@ public class FlightSearchFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         final WifiManager wifi = (WifiManager) getContext().getSystemService(Context.WIFI_SERVICE);
-        final ConnectivityManager Cm = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
 
         View rootView = inflater.inflate(R.layout.fragment_flight_search, container, false);
         arrayAdapterCitiesFrom = new ArrayAdapter<String>(getActivity(), R.layout.spinner_item_cities, R.id.spinner_item_flight_textview);
         arrayAdapterCitiesTo = new ArrayAdapter<String>(getActivity(), R.layout.spinner_item_cities, R.id.spinner_item_flight_textview);
         arrayAdapterCountries = new ArrayAdapter<String>(getActivity(), R.layout.spinner_item_cities, R.id.spinner_item_flight_textview);
 
-        Thread t = new Thread(){
+        connectivityThread = new Thread(){
             NetworkInfo networkInfo =  Cm.getActiveNetworkInfo();
 
             public void run(){
@@ -147,36 +151,11 @@ public class FlightSearchFragment extends Fragment {
                 }
 
                 if(networkInfo.isConnected())
-                    fetchCountryData();
+                    updateDatabase();
             }
         };
 
-        if(!wifi.isWifiEnabled()){
-            wifi.setWifiEnabled(true);
-            NetworkInfo networkInfo = Cm.getActiveNetworkInfo();
-
-            if(networkInfo != null){
-                if(networkInfo.isConnected())
-                    fetchCountryData();
-                else
-                    t.start();
-            }
-            else{
-                t.start();
-            }
-        }
-        else{
-            NetworkInfo networkInfo = Cm.getActiveNetworkInfo();
-            if(networkInfo != null){
-                if(networkInfo.isConnected())
-                    fetchCountryData();
-                else
-                    t.start();
-            }
-            else{
-                t.start();
-            }
-        }
+        fetchData();
 
         final AutoCompleteTextView from = ((AutoCompleteTextView)rootView.findViewById(R.id.spinnerFlightFrom));
         from.setAdapter(arrayAdapterCountries);
@@ -321,8 +300,17 @@ public class FlightSearchFragment extends Fragment {
         ((Button)rootView.findViewById(R.id.buttonSearch)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!wifi.isWifiEnabled())
+                NetworkInfo net = Cm.getActiveNetworkInfo();
+                if(net != null){
+                    if(!net.isConnected()){
+                        Toast.makeText(getActivity(),NO_INTERNET,Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                }
+                else{
+                    Toast.makeText(getActivity(),NO_INTERNET,Toast.LENGTH_SHORT).show();
                     return;
+                }
 
                 String from = "";
                 if(sFrom.getText() != null) {
@@ -351,9 +339,10 @@ public class FlightSearchFragment extends Fragment {
 
                 if(from.isEmpty() || to.isEmpty() || depDate.isEmpty()){
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                    builder.setMessage("Τα πεδία: \nΠροέλευσης\nΠροορισμού\nΗμερομηνίας Αναχώρισης\nείναι υποχρεωτικά. Παρακαλώ Συμπληρώστε τα.");
+                    builder.setMessage("Τα πεδία: \n- Πτήση Απο\n- Πτήση Προς\n- Ημερομηνία Αναχώρισης\nείναι υποχρεωτικά. Παρακαλώ Συμπληρώστε τα.");
                     builder.setTitle("Ελλιπή Κριτήρια Αναζήτησης");
 
+                    builder.setNeutralButton("Εντάξει",null);
                     builder.create().show();
                     return;
                 }
@@ -409,6 +398,20 @@ public class FlightSearchFragment extends Fragment {
     }
 
     private void updateDatabase(){
+        NetworkInfo net = Cm.getActiveNetworkInfo();
+        if(net != null){
+            if(!net.isConnected()){
+                Toast.makeText(getActivity(),NO_INTERNET,Toast.LENGTH_SHORT).show();
+                return;
+            }
+        }
+        else{
+            Toast.makeText(getActivity(),NO_INTERNET,Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        dbHandler.deleteAllData();
+
         dialog.setData(
                 getString(R.string.dialog_data_fetch),
                 getString(R.string.dialog_wait_msg)
@@ -421,7 +424,7 @@ public class FlightSearchFragment extends Fragment {
         new FetchData().execute();
     }
 
-    public void fetchCountryData(){
+    public void fetchData(){
         if(dbHandler.isEmpty()) {
             updateDatabase();
         }
